@@ -1,0 +1,70 @@
+﻿@model Assignment.Models.VModels.OrderVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Order.OrderId" />
+            <div class="form-group">
+                <label asp-for="Order.CustomerId" class="control-label"></label>
+                <select asp-for="Order.CustomerId" class="form-control" asp-items="@Model.CustomerList">
+                    <option disabled>---SelectCustomer---</option>
+                </select>
+                <span asp-validation-for="Order.CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderStatus" class="control-label"></label>
+                <input asp-for="Order.OrderStatus" class="form-control" />
+                <span asp-validation-for="Order.OrderStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderDate" class="control-label"></label>
+                <input asp-for="Order.OrderDate" class="form-control" />
+                <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.RequiredDate" class="control-label"></label>
+                <input asp-for="Order.RequiredDate" class="form-control" />
+                <span asp-validation-for="Order.RequiredDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.ShippedDate" class="control-label"></label>
+                <input asp-for="Order.ShippedDate" class="form-control" />
+                <span asp-validation-for="Order.ShippedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.StoreId" class="control-label"></label>
+                <select asp-for="Order.StoreId" class="form-control" asp-items="@Model.StoreList">
+                    <option disabled>---Select Store---</option>
+                </select>
+                <span asp-validation-for="Order.StoreId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.StaffId" class="control-label"></label>
+                <select asp-for="Order.StaffId" class="form-control" asp-items="@Model.StaffList">
+                    <option disabled>---Select Staff---</option>
+                </select>
+                <span asp-validation-for="Order.StaffId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary " asp-action="Index"> <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i> Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
