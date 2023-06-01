@@ -5,25 +5,26 @@ using System.Linq;
 using Assignment.DataAccess.Data;
 using Assignment.Models;
 using Assignment.Models.VModels;
+using Assignment.DataAccess.Repository.IRepository;
 
 namespace Assignment.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public OrderController(ApplicationDbContext db)
+        private readonly IUnitOfWork _db;
+        public OrderController(IUnitOfWork db)
         {
             _db = db;
         }
         // GET: OrderController
         public ActionResult Index()
         {
-            IEnumerable<Order> objlist = _db.Order;
+            IEnumerable<Order> objlist = _db.Order.GetAll().ToList();
             foreach (Order obj in objlist)
             {
-                obj.Customer = _db.Customer.FirstOrDefault(u => u.CustomerId == obj.CustomerId);
-                obj.Store = _db.Store.FirstOrDefault(u => u.StoreId == obj.StoreId);
-                obj.Staff = _db.Staff.FirstOrDefault(u => u.StaffId == obj.StaffId);
+                obj.Customer = _db.Customer.Get(u => u.CustomerId == obj.CustomerId);
+                obj.Store = _db.Store.Get(u => u.StoreId == obj.StoreId);
+                obj.Staff = _db.Staff.Get(u => u.StaffId == obj.StaffId);
             }
             return View(objlist);
         }
@@ -34,19 +35,19 @@ namespace Assignment.Controllers
             OrderVM OrderVM = new OrderVM()
             {
                 Order = new Order(),
-                CustomerList = _db.Customer.Select(u => new SelectListItem
+                CustomerList = _db.Customer.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.FirstName + " " + u.LastName,
                     Value = u.CustomerId.ToString()
 
                 }),
-                StaffList = _db.Staff.Select(u => new SelectListItem
+                StaffList = _db.Staff.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.FirstName + " " + u.LastName,
                     Value = u.StaffId.ToString()
 
                 }),
-                StoreList = _db.Store.Select(u => new SelectListItem
+                StoreList = _db.Store.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.StoreName,
                     Value = u.StoreId.ToString()
@@ -63,7 +64,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Order.Add(obj.Order);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -76,10 +77,10 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Order.Find(id);
-            obj.Customer = _db.Customer.FirstOrDefault(u => u.CustomerId == obj.CustomerId);
-            obj.Store = _db.Store.FirstOrDefault(u => u.StoreId == obj.StoreId);
-            obj.Staff = _db.Staff.FirstOrDefault(u => u.StaffId == obj.StaffId);
+            var obj = _db.Order.Get(u=> u.OrderId==id);
+            obj.Customer = _db.Customer.Get(u => u.CustomerId == obj.CustomerId);
+            obj.Store = _db.Store.Get(u => u.StoreId == obj.StoreId);
+            obj.Staff = _db.Staff.Get(u => u.StaffId == obj.StaffId);
             if (obj == null)
             {
                 return NotFound();
@@ -87,19 +88,19 @@ namespace Assignment.Controllers
             OrderVM OrderVM = new OrderVM()
             {
                 Order = obj,
-                CustomerList = _db.Customer.Select(u => new SelectListItem
+                CustomerList = _db.Customer.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.FirstName + " " + u.LastName,
                     Value = u.CustomerId.ToString()
 
                 }),
-                StaffList = _db.Staff.Select(u => new SelectListItem
+                StaffList = _db.Staff.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.FirstName + " " + u.LastName,
                     Value = u.StaffId.ToString()
 
                 }),
-                StoreList = _db.Store.Select(u => new SelectListItem
+                StoreList = _db.Store.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.StoreName,
                     Value = u.StoreId.ToString()
@@ -116,7 +117,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Order.Update(obj.Order);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -128,10 +129,10 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Order.Find(id);
-            obj.Customer = _db.Customer.FirstOrDefault(u => u.CustomerId == obj.CustomerId);
-            obj.Store = _db.Store.FirstOrDefault(u => u.StoreId == obj.StoreId);
-            obj.Staff = _db.Staff.FirstOrDefault(u => u.StaffId == obj.StaffId);
+            var obj = _db.Order.Get(u => u.OrderId == id);
+            obj.Customer = _db.Customer.Get(u => u.CustomerId == obj.CustomerId);
+            obj.Store = _db.Store.Get(u => u.StoreId == obj.StoreId);
+            obj.Staff = _db.Staff.Get(u => u.StaffId == obj.StaffId);
             if (obj == null)
             {
                 return NotFound();
@@ -150,7 +151,7 @@ namespace Assignment.Controllers
             //    return NotFound();
             //}
             _db.Order.Remove(obj);
-            _db.SaveChanges();
+            _db.Save();
             return RedirectToAction("Index");
         }
     }

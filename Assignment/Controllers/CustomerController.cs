@@ -3,20 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Assignment.DataAccess.Data;
 using Assignment.Models;
+using Assignment.DataAccess.Repository.IRepository;
 
 namespace Assignment.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CustomerController(ApplicationDbContext db)
+        private readonly IUnitOfWork _db;
+        public CustomerController(IUnitOfWork db)
         {
             _db = db;
         }
         // GET: Customer1Controller
         public ActionResult Index()
         {
-            IEnumerable<Customer> objlist = _db.Customer;
+            IEnumerable<Customer> objlist = _db.Customer.GetAll().ToList();
             return View(objlist);
         }
 
@@ -34,7 +35,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Customer.Add(obj);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -47,7 +48,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Customer.Find(id);
+            var obj = _db.Customer.Get(u=> u.CustomerId==id);
             if (obj == null)
             {
                 return NotFound();
@@ -63,7 +64,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Customer.Update(obj);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -76,7 +77,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Customer.Find(id);
+            var obj = _db.Customer.Get(u => u.CustomerId == id);
             if (obj == null)
             {
                 return NotFound();
@@ -95,7 +96,7 @@ namespace Assignment.Controllers
             //    return NotFound();
             //}
             _db.Customer.Remove(obj);
-            _db.SaveChanges();
+            _db.Save();
             return RedirectToAction("Index");
         }
     }

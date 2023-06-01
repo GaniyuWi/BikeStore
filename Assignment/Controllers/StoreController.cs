@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using Assignment.DataAccess.Data;
 using Assignment.Models;
+using Assignment.DataAccess.Repository.IRepository;
 
 namespace Assignment.Controllers
 {
     public class StoreController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public StoreController(ApplicationDbContext db)
+        private readonly IUnitOfWork _db;
+        public StoreController(IUnitOfWork db)
         {
             _db = db;
         }
         // GET: StoreController
         public ActionResult Index()
         {
-            IEnumerable<Store> objlist = _db.Store;
+            IEnumerable<Store> objlist = _db.Store.GetAll().ToList();
             return View(objlist);
         }
 
@@ -33,7 +34,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Store.Add(obj);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -46,7 +47,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Store.Find(id);
+            var obj = _db.Store.Get(u => u.StoreId == id);
             if (obj == null)
             {
                 return NotFound();
@@ -62,7 +63,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Store.Update(obj);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -75,7 +76,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Store.Find(id);
+            var obj = _db.Store.Get(u => u.StoreId == id);
             if (obj == null)
             {
                 return NotFound();
@@ -94,7 +95,7 @@ namespace Assignment.Controllers
             //    return NotFound();
             //}
             _db.Store.Remove(obj);
-            _db.SaveChanges();
+            _db.Save();
             return RedirectToAction("Index");
         }
     }

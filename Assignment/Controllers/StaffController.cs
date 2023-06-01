@@ -7,24 +7,25 @@ using System.Security.Cryptography.X509Certificates;
 using Assignment.DataAccess.Data;
 using Assignment.Models;
 using Assignment.Models.VModels;
+using Assignment.DataAccess.Repository.IRepository;
 
 namespace Assignment.Controllers
 {
     public class StaffController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public StaffController(ApplicationDbContext db)
+        private readonly IUnitOfWork _db;
+        public StaffController(IUnitOfWork db)
         {
             _db = db;
         }
         // GET: StaffController
         public ActionResult Index()
         {
-            IEnumerable<Staff> objlist = _db.Staff;
+            IEnumerable<Staff> objlist = _db.Staff.GetAll().ToList();
             foreach (Staff obj in objlist)
             {
-                obj.Store = _db.Store.FirstOrDefault(u => u.StoreId == obj.StoreId);
-                obj.Manager = _db.Staff.FirstOrDefault(u => u.StaffId == obj.ManagerId);
+                obj.Store = _db.Store.Get(u => u.StoreId == obj.StoreId);
+                obj.Manager = _db.Staff.Get(u => u.StaffId == obj.ManagerId);
             }
             return View(objlist);
         }
@@ -33,13 +34,13 @@ namespace Assignment.Controllers
             StaffVM staffVM = new StaffVM()
             {
                 Staff = new Staff(),
-                ManagerList = _db.Staff.Select(u => new SelectListItem
+                ManagerList = _db.Staff.GetAll().Select(u => new SelectListItem
                 {
                     Text= u.FirstName +" "+ u.LastName,
                     Value=u.StaffId.ToString()
 
                 }),
-                StoreList = _db.Store.Select(u => new SelectListItem
+                StoreList = _db.Store.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.StoreName,
                     Value = u.StoreId.ToString()
@@ -56,7 +57,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Staff.Add(obj.Staff);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -69,7 +70,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Staff.Find(id);
+            var obj = _db.Staff.Get(u => u.StaffId==id);
             if (obj == null)
             {
                 return NotFound();
@@ -77,13 +78,13 @@ namespace Assignment.Controllers
             StaffVM staffVM = new StaffVM()
             {
                 Staff = obj,
-                ManagerList = _db.Staff.Select(u => new SelectListItem
+                ManagerList = _db.Staff.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.FirstName + " " + u.LastName,
                     Value = u.StaffId.ToString()
 
                 }),
-                StoreList = _db.Store.Select(u => new SelectListItem
+                StoreList = _db.Store.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.StoreName,
                     Value = u.StoreId.ToString()
@@ -100,7 +101,7 @@ namespace Assignment.Controllers
             if (ModelState.IsValid)
             {
                 _db.Staff.Update(obj.Staff);
-                _db.SaveChanges();
+                _db.Save();
                 return RedirectToAction("Index");
             }
             return View();
@@ -112,9 +113,9 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Staff.Find(id);
-            obj.Store = _db.Store.FirstOrDefault(u => u.StoreId == obj.StoreId);
-            obj.Manager = _db.Staff.FirstOrDefault(u => u.StaffId == obj.ManagerId);
+            var obj = _db.Staff.Get(u => u.StaffId == id);
+            obj.Store = _db.Store.Get(u => u.StoreId == obj.StoreId);
+            obj.Manager = _db.Staff.Get(u => u.StaffId == obj.ManagerId);
             if (obj == null)
             {
                 return NotFound();
@@ -133,7 +134,7 @@ namespace Assignment.Controllers
             //    return NotFound();
             //}
             _db.Staff.Remove(obj);
-            _db.SaveChanges();
+            _db.Save();
             return RedirectToAction("Index");
         }
     }
