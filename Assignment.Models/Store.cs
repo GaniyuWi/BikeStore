@@ -53,12 +53,12 @@ public partial class Store
     [Unicode(false)]
     public string ZipCode { get; set; }
 
-    [InverseProperty("Store")]
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    //[InverseProperty("Store")]
+    //public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    [InverseProperty("Store")]
-    public virtual ICollection<Staff> Staff { get; set; } = new List<Staff>();
+    //[InverseProperty("Store")]
+    //public virtual ICollection<Staff> Staff { get; set; } = new List<Staff>();
 
-    [InverseProperty("Store")]
-    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+    //[InverseProperty("Store")]
+    //public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }

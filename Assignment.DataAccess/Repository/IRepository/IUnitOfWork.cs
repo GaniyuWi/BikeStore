@@ -13,6 +13,10 @@ namespace Assignment.DataAccess.Repository.IRepository
         IStaffRepository Staff { get; }
         IStoreRepository Store { get; }
         IOrderRepository Order { get; }
+        IProductRepository Product { get; }
+        ICategoryRepository Category { get; }
+        IBrandRepository Brand { get; }
+        IStockRepository Stock { get; }
         void Save();
 
     }

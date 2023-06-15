@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Assignment.DataAccess.Data;
 using Assignment.DataAccess.Repository.IRepository;
 using Assignment.DataAccess.Repository;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddControllers().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+//    options.JsonSerializerOptions.WriteIndented = true;
+//});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +43,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=User}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

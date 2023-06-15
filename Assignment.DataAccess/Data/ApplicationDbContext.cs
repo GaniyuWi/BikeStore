@@ -6,20 +6,27 @@ using Assignment.Models;
 
 namespace Assignment.DataAccess.Data;
 
-public partial class ApplicationDbContext : IdentityDbContext
+public partial class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext()
-    {
-    }
+    //public ApplicationDbContext()
+    //{
+    //}
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    if (!optionsBuilder.IsConfigured)
+    //    {
+    //        optionsBuilder.UseSqlServer("Data Source=DESKTOP-3MSE7TQ\\SQLEXPRESS;Initial Catalog=BikeStore;Trusted_Connection=True;MultipleActiveResultSets=True;Encrypt=False;" );
+    //    }
+    //}
 
     public virtual DbSet<Brand> Brand { get; set; }
 
-    public virtual DbSet<Category> Categorie { get; set; }
+    public virtual DbSet<Category> Category { get; set; }
 
     public virtual DbSet<Customer> Customer { get; set; }
 

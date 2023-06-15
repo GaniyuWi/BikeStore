@@ -9,11 +9,13 @@ using Assignment.Models;
 using Assignment.Models.VModels;
 using Assignment.DataAccess.Repository.IRepository;
 
-namespace Assignment.Controllers
+namespace Assignment.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class StaffController : Controller
     {
         private readonly IUnitOfWork _db;
+        private string message = "Staff";
         public StaffController(IUnitOfWork db)
         {
             _db = db;
@@ -36,8 +38,8 @@ namespace Assignment.Controllers
                 Staff = new Staff(),
                 ManagerList = _db.Staff.GetAll().Select(u => new SelectListItem
                 {
-                    Text= u.FirstName +" "+ u.LastName,
-                    Value=u.StaffId.ToString()
+                    Text = u.FirstName + " " + u.LastName,
+                    Value = u.StaffId.ToString()
 
                 }),
                 StoreList = _db.Store.GetAll().Select(u => new SelectListItem
@@ -58,7 +60,22 @@ namespace Assignment.Controllers
             {
                 _db.Staff.Add(obj.Staff);
                 _db.Save();
+                TempData["success"] = message + " created sucessfully";
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                obj.ManagerList = _db.Staff.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.FirstName + " " + u.LastName,
+                    Value = u.StaffId.ToString()
+
+                });
+                obj.StoreList = _db.Store.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.StoreName,
+                    Value = u.StoreId.ToString()
+                });
             }
             return View();
         }
@@ -70,7 +87,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Staff.Get(u => u.StaffId==id);
+            var obj = _db.Staff.Get(u => u.StaffId == id);
             if (obj == null)
             {
                 return NotFound();
@@ -102,6 +119,7 @@ namespace Assignment.Controllers
             {
                 _db.Staff.Update(obj.Staff);
                 _db.Save();
+                TempData["success"] = message + " updated sucessfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -135,6 +153,7 @@ namespace Assignment.Controllers
             //}
             _db.Staff.Remove(obj);
             _db.Save();
+            TempData["success"] = message + " deleted sucessfully";
             return RedirectToAction("Index");
         }
     }

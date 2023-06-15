@@ -14,18 +14,20 @@ public partial class Stock
     [Column("store_id")]
     public int StoreId { get; set; }
 
+    [Required]
     [Key]
     [Column("product_id")]
     public int ProductId { get; set; }
 
+    [Required]
     [Column("quantity")]
     public int? Quantity { get; set; }
 
     [ForeignKey("ProductId")]
-    [InverseProperty("Stocks")]
+    //[InverseProperty("Stocks")]
     public virtual Product Product { get; set; } = null!;
 
     [ForeignKey("StoreId")]
-    [InverseProperty("Stocks")]
+    //[InverseProperty("Stocks")]
     public virtual Store Store { get; set; } = null!;
 }

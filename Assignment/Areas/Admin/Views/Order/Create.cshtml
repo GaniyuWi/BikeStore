@@ -1,4 +1,4 @@
-﻿@model Assignment.Models.VModels.OrderVM
+﻿@model OrderVM
 
 @{
     ViewData["Title"] = "Create";
@@ -17,6 +17,7 @@
                 <select asp-for="Order.CustomerId" class="form-control" asp-items="@Model.CustomerList">
                     <option disabled selected>---Select Customer---</option>
                 </select>
+                <span asp-validation-for="Order.CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Order.OrderStatus" class="control-label"></label>
@@ -43,12 +44,14 @@
                 <select asp-for="Order.StoreId" class="form-control" asp-items="@Model.StoreList">
                     <option disabled selected>---Select Store---</option>
                 </select>
+                <span asp-validation-for="Order.StoreId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Order.StaffId" class="control-label"> Staff Name</label>
                 <select asp-for="Order.StaffId" class="form-control" asp-items="@Model.StaffList">
                     <option disabled selected>---Select Staff---</option>
                 </select>
+                <span asp-validation-for="Order.StaffId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -13,11 +13,13 @@ public partial class Customer
     [Column("customer_id")]
     public int CustomerId { get; set; }
 
+    [Required]
     [Column("first_name")]
     [StringLength(255)]
     [Unicode(false)]
     public string FirstName { get; set; } = null!;
 
+    [Required]
     [Column("last_name")]
     [StringLength(255)]
     [Unicode(false)]
@@ -55,6 +57,6 @@ public partial class Customer
     [Unicode(false)]
     public string ZipCode { get; set; }
 
-    [InverseProperty("Customer")]
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    //[InverseProperty("Customer")]
+    //public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

@@ -5,11 +5,13 @@ using Assignment.DataAccess.Data;
 using Assignment.Models;
 using Assignment.DataAccess.Repository.IRepository;
 
-namespace Assignment.Controllers
+namespace Assignment.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CustomerController : Controller
     {
         private readonly IUnitOfWork _db;
+        private string message = "Customer";
         public CustomerController(IUnitOfWork db)
         {
             _db = db;
@@ -36,6 +38,7 @@ namespace Assignment.Controllers
             {
                 _db.Customer.Add(obj);
                 _db.Save();
+                TempData["success"] = message + " Created sucessfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -48,7 +51,7 @@ namespace Assignment.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Customer.Get(u=> u.CustomerId==id);
+            var obj = _db.Customer.Get(u => u.CustomerId == id);
             if (obj == null)
             {
                 return NotFound();
@@ -65,6 +68,7 @@ namespace Assignment.Controllers
             {
                 _db.Customer.Update(obj);
                 _db.Save();
+                TempData["success"] = message + " updated sucessfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -97,6 +101,7 @@ namespace Assignment.Controllers
             //}
             _db.Customer.Remove(obj);
             _db.Save();
+            TempData["success"] = message + " deleted sucessfully";
             return RedirectToAction("Index");
         }
     }

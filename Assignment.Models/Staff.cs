@@ -46,17 +46,17 @@ public partial class Staff
     [Column("manager_id")]
     public int? ManagerId { get; set; }
 
-    [InverseProperty("Manager")]
-    public virtual ICollection<Staff> InverseManager { get; set; } = new List<Staff>();
+    //[InverseProperty("Manager")]
+    //public virtual ICollection<Staff> InverseManager { get; set; } = new List<Staff>();
 
     [ForeignKey("ManagerId")]
-    [InverseProperty("InverseManager")]
+    //[InverseProperty("InverseManager")]
     public virtual Staff Manager { get; set; }
 
-    [InverseProperty("Staff")]
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    //[InverseProperty("Staff")]
+    //public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     [ForeignKey("StoreId")]
-    [InverseProperty("Staff")]
+    //[InverseProperty("Staff")]
     public virtual Store Store { get; set; } = null!;
 }

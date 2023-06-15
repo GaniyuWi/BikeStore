@@ -14,16 +14,20 @@ public partial class OrderItem
     [Column("order_id")]
     public int OrderId { get; set; }
 
+    [Required]
     [Key]
     [Column("item_id")]
     public int ItemId { get; set; }
 
+    [Required]
     [Column("product_id")]
     public int ProductId { get; set; }
 
+    [Required]
     [Column("quantity")]
     public int Quantity { get; set; }
 
+    [Required]
     [Column("list_price", TypeName = "decimal(10, 2)")]
     public decimal ListPrice { get; set; }
 
@@ -31,10 +35,10 @@ public partial class OrderItem
     public decimal Discount { get; set; }
 
     [ForeignKey("OrderId")]
-    [InverseProperty("OrderItems")]
+    //[InverseProperty("OrderItems")]
     public virtual Order Order { get; set; } = null!;
 
     [ForeignKey("ProductId")]
-    [InverseProperty("OrderItems")]
+    //[InverseProperty("OrderItems")]
     public virtual Product Product { get; set; } = null!;
 }

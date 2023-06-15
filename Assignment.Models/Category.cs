@@ -13,11 +13,12 @@ public partial class Category
     [Column("category_id")]
     public int CategoryId { get; set; }
 
+    [Required]
     [Column("category_name")]
     [StringLength(255)]
     [Unicode(false)]
     public string CategoryName { get; set; } = null!;
 
-    [InverseProperty("Category")]
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    //[InverseProperty("Category")]
+    //public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

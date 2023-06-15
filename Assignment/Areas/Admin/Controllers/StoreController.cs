@@ -4,11 +4,13 @@ using Assignment.DataAccess.Data;
 using Assignment.Models;
 using Assignment.DataAccess.Repository.IRepository;
 
-namespace Assignment.Controllers
+namespace Assignment.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class StoreController : Controller
     {
         private readonly IUnitOfWork _db;
+        private string message = "Store";
         public StoreController(IUnitOfWork db)
         {
             _db = db;
@@ -35,6 +37,7 @@ namespace Assignment.Controllers
             {
                 _db.Store.Add(obj);
                 _db.Save();
+                TempData["success"] = message + " created sucessfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -64,6 +67,7 @@ namespace Assignment.Controllers
             {
                 _db.Store.Update(obj);
                 _db.Save();
+                TempData["success"] = message + " updated sucessfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -96,6 +100,7 @@ namespace Assignment.Controllers
             //}
             _db.Store.Remove(obj);
             _db.Save();
+            TempData["success"] = message + " deleted sucessfully";
             return RedirectToAction("Index");
         }
     }

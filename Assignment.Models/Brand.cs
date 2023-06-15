@@ -13,11 +13,12 @@ public partial class Brand
     [Column("brand_id")]
     public int BrandId { get; set; }
 
+    [Required]
     [Column("brand_name")]
     [StringLength(255)]
     [Unicode(false)]
     public string BrandName { get; set; } = null!;
 
-    [InverseProperty("Brand")]
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    //[InverseProperty("Brand")]
+    //public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

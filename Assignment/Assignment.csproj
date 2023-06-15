@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Assignment.Utility\Assignment.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Products\" />
+  </ItemGroup>
+
 </Project>

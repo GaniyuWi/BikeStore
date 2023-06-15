@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +18,14 @@ public partial class Order
     [Column("customer_id")]
     public int? CustomerId { get; set; }
 
+    [Required]
     [Column("order_status")]
     public byte OrderStatus { get; set; }
 
     [Column("order_date", TypeName = "date")]
     public DateTime OrderDate { get; set; }
-    [Required]
 
+    [Required]
     [Column("required_date", TypeName = "date")]
     public DateTime RequiredDate { get; set; }
 
@@ -39,17 +41,20 @@ public partial class Order
     public int StaffId { get; set; }
 
     [ForeignKey("CustomerId")]
-    [InverseProperty("Orders")]
+    //[InverseProperty("Orders")]
+    //[ValidateNever]
     public virtual Customer Customer { get; set; }
 
-    [InverseProperty("Order")]
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    //[InverseProperty("Order")]
+    //public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     [ForeignKey("StaffId")]
-    [InverseProperty("Orders")]
+    //[InverseProperty("Orders")]
+    //[ValidateNever]
     public virtual Staff Staff { get; set; } = null!;
 
     [ForeignKey("StoreId")]
-    [InverseProperty("Orders")]
+    //[InverseProperty("Orders")]
+    //[ValidateNever]
     public virtual Store Store { get; set; } = null!;
 }
